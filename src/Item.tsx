@@ -1,26 +1,33 @@
 import { useStore } from "@nanostores/react";
-import { fieldsAtom, itemsAtom, removeItem } from "./store";
+import { fieldsAtom, filterAtom, itemsAtom, removeItem } from "./store";
 import { useState } from "react";
+import clsx from "clsx";
+import { filterMatches } from "./utils";
 
 export default function ItemWrapper({ id }: { id: string }) {
   const items = useStore(itemsAtom);
+  const filter = useStore(filterAtom);
   const item = items[id];
 
   if (!item) {
     return null;
   }
 
-  return <Item id={id} {...item} />;
+  const hidden = !filterMatches(item.values, filter);
+
+  return <Item id={id} {...item} hidden={hidden} />;
 }
 
 function Item({
   id,
   values,
   count: initialCount,
+  hidden,
 }: {
   id: string;
   values: string[];
   count: number;
+  hidden: boolean;
 }) {
   const fields = useStore(fieldsAtom);
   const [count, setCount] = useState(initialCount.toString());
@@ -47,7 +54,12 @@ function Item({
   }
 
   return (
-    <tr className="border-b border-gray-300">
+    <tr
+      className={clsx(
+        !hidden && "border-b border-gray-300",
+        hidden && "invisible",
+      )}
+    >
       {fields.map((_, i) => (
         <td
           className="px-4 py-2 border-b border-gray-300 text-left text-gray-800"

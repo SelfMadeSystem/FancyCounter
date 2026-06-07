@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/react";
-import { addItem, fieldsAtom, itemsAtom } from "./store";
+import { addItem, fieldsAtom, filterAtom } from "./store";
 import { useRef, useState } from "react";
 
 export function Input() {
@@ -8,20 +8,19 @@ export function Input() {
   const [count, setCount] = useState(1);
   const fields = useStore(fieldsAtom);
 
-  function onValueBlur(e: React.FocusEvent<HTMLTableCellElement>, i: number) {
-    const newValue = e.currentTarget.textContent || "";
-    setValues((prev) => {
-      prev.length = fields.length; // Ensure the array length matches the number of fields
-      const newValues = [...prev];
-      newValues[i] = newValue;
-      return newValues;
-    });
+  function onValueChange(newValue: string, i: number) {
+    values.length = fields.length; // Ensure the array length matches the number of fields
+    const newValues = [...values];
+    newValues[i] = newValue;
+    filterAtom.set(newValues.map(v => v?.trim()?.toLowerCase() ?? ""));
+    setValues(newValues);
   }
 
-  function onKeyDown(e: React.KeyboardEvent<HTMLTableCellElement>) {
+  function onKeyDown(e: React.KeyboardEvent<HTMLTableCellElement>, i: number) {
     if (e.key === "Enter") {
       e.preventDefault();
-      const nextIndex = refs.current.findIndex((ref) => ref === e.currentTarget) + 1;
+      const nextIndex =
+        refs.current.findIndex((ref) => ref === e.currentTarget) + 1;
       if (nextIndex < refs.current.length) {
         refs.current[nextIndex]?.focus();
       } else {
@@ -45,6 +44,7 @@ export function Input() {
         ref.textContent = "";
       }
     });
+    filterAtom.set([]);
   }
 
   return (
@@ -55,8 +55,8 @@ export function Input() {
           key={i}
           contentEditable
           suppressContentEditableWarning
-          onBlur={(e) => onValueBlur(e, i)}
-          onKeyDown={onKeyDown}
+          onKeyDown={e => onKeyDown(e, i)}
+          onInput={e => onValueChange(e.currentTarget.innerText, i)}
           ref={(el) => {
             refs.current[i] = el;
           }}

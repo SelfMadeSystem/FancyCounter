@@ -2,11 +2,21 @@ import { useStore } from "@nanostores/react";
 import { Fields } from "./Fields";
 import "./index.css";
 import Item from "./Item";
-import { itemsAtom } from "./store";
+import { itemsAtom, filterAtom } from "./store";
 import { Input } from "./Input";
+import { filterMatches } from "./utils";
 
 export function App() {
-  const items = Object.keys(useStore(itemsAtom));
+  const itemsObj = useStore(itemsAtom);
+  const filter = useStore(filterAtom);
+
+
+  const items = Object.keys(itemsObj).sort((a, b) => {
+    const aMatch = filterMatches(itemsObj[a]!.values, filter);
+    const bMatch = filterMatches(itemsObj[b]!.values, filter);
+    if (aMatch === bMatch) return 0;
+    return aMatch ? -1 : 1;
+  });
 
   return (
     <>

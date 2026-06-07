@@ -1,4 +1,5 @@
 import { persistentAtom, persistentMap } from "@nanostores/persistent";
+import { atom } from "nanostores";
 
 export type Field = {
   name: string;
@@ -68,13 +69,4 @@ export function addItem(values: string[], count: number) {
   }
 }
 
-export function searchItems(query: string): Array<{ key: string; item: Item }> {
-  const items = itemsAtom.get();
-  return Object.entries(items)
-    .filter(([key, item]) =>
-      item.values.some((value) =>
-        value.toLowerCase().includes(query.toLowerCase()),
-      ),
-    )
-    .map(([key, item]) => ({ key, item }));
-}
+export const filterAtom = atom<string[]>([]);
