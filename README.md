@@ -1,21 +1,37 @@
-# bun-react-tailwind-template
+# FancyCounter
 
-To install dependencies:
+A small web app for counting items with customizable fields and fast keyboard-driven input.
+
+## Key Features
+
+- **Export:** Export data to Excel.
+- **Custom Fields:** Define custom field names for each item.
+- **Smart Increment:** Automatically increments quantity when all fields match an existing item.
+- **Search:** Filter items per field.
+- **Keyboard Friendly:** Use Up/Down to select, Enter to increment, Tab to move between top-bar fields. When at the last top-bar field (excluding quantity), press Enter to add the item.
+
+## Development
+
+Install dependencies:
 
 ```bash
-bun install
+bun i
 ```
 
-To start a development server:
+Start the dev server:
 
 ```bash
 bun dev
 ```
 
-To run for production:
+Build for production:
 
 ```bash
-bun start
+bun run build
 ```
 
-This project was created using `bun init` in bun v1.3.14. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+The production build is placed in `./dist`.
+
+## License
+
+MIT — see [LICENSE](./LICENSE) for details.
