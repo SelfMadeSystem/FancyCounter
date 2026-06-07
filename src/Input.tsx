@@ -94,7 +94,7 @@ export function Input() {
   }
 
   return (
-    <>
+    <tr className="text-left text-sm text-gray-600 print:hidden">
       {fields.map((_, i) => (
         <td
           className="border border-gray-300 px-4 py-2 text-left text-gray-800"
@@ -113,17 +113,17 @@ export function Input() {
           type="number"
           value={count}
           onChange={e => setCount(parseInt(e.target.value, 10))}
-          className="w-18 rounded border border-gray-300 px-2 py-2"
+          className="w-18 rounded px-2 py-2"
         />
       </td>
-      <td>
+      <td className="h-1">
         <button
-          className="cursor-pointer rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+          className="h-full w-full cursor-pointer rounded bg-blue-500 text-white select-none hover:bg-blue-600"
           onClick={onAddItem}
         >
-          Add
+          +
         </button>
       </td>
-    </>
+    </tr>
   );
 }

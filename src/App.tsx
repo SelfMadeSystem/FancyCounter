@@ -34,7 +34,7 @@ export function App() {
 
   return (
     <>
-      <div className="flex justify-center max-md:my-3 md:float-end">
+      <div className="flex justify-center max-md:my-3 md:float-end print:hidden">
         <button
           className="cursor-pointer rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
           onClick={exportToExcel}
@@ -44,12 +44,8 @@ export function App() {
       </div>
       <table className="mx-auto rounded-lg border border-gray-300 bg-white shadow-md">
         <thead className="border-b border-gray-300 bg-gray-100">
-          <tr className="text-left text-sm text-gray-600">
-            <Input />
-          </tr>
-          <tr className="text-left text-sm text-gray-600 uppercase">
-            <Fields />
-          </tr>
+          <Input />
+          <Fields />
         </thead>
         <tbody>
           {items.map(([item]) => (

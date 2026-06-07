@@ -29,20 +29,20 @@ export default function Field({
   }
 
   return (
-    <th className="border-b border-gray-300 pl-4 text-left text-sm text-gray-600 uppercase focus-within:outline-1">
+    <th className="border-r border-b border-gray-300 px-4 text-left text-sm text-gray-600 uppercase not-print:pr-0 focus-within:outline-1">
       <div className="flex items-center justify-between">
         <span
           contentEditable="plaintext-only"
           suppressContentEditableWarning
           onBlur={onNameBlur}
-          className="w-full outline-none"
+          className="w-full py-2 outline-none"
         >
           {name}
         </span>
         <span
           contentEditable={false}
           onClick={toggleFieldSort}
-          className="cursor-pointer px-2 py-2 font-mono text-xs text-gray-500"
+          className="cursor-pointer px-2 py-2 font-mono text-xs text-gray-500 select-none print:hidden"
           title="Sort by this field"
         >
           {sort.by === index ? (sort.dir === 'asc' ? '▲' : '▼') : '⤓'}

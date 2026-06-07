@@ -38,6 +38,7 @@ function Item({
   const [count, setCount] = useState(initialCount.toString());
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setCount(initialCount.toString());
   }, [initialCount]);
 
@@ -72,7 +73,7 @@ function Item({
     >
       {fields.map((_, i) => (
         <td
-          className="border-b border-gray-300 px-4 py-2 text-left text-gray-800"
+          className="border-r border-b border-gray-300 px-4 py-2 text-left text-gray-800"
           key={i}
           contentEditable="plaintext-only"
           suppressContentEditableWarning
@@ -81,21 +82,22 @@ function Item({
           {values[i] || ''}
         </td>
       ))}
-      <td className="border-b border-gray-300 text-left text-gray-800">
+      <td className="border-b border-gray-300 text-left text-gray-800 print:px-4">
         <input
           type="number"
           value={count}
           onChange={e => setCount(e.target.value)}
           onBlur={commitCount}
-          className="w-18 rounded border border-gray-300 px-2 py-1"
+          className="w-18 px-2 py-1 print:hidden"
         />
+        <div className="w-full not-print:hidden">{count}</div>
       </td>
-      <td className="border-b border-gray-300 text-left text-gray-800">
+      <td className="h-1 border-b border-gray-300 text-left text-gray-800 print:hidden">
         <button
           onClick={onDelete}
-          className="cursor-pointer rounded bg-red-500 px-2 py-1 text-white hover:bg-red-600"
+          className="h-full w-full cursor-pointer rounded bg-red-500 text-white select-none hover:bg-red-600"
         >
-          Delete
+          -
         </button>
       </td>
     </tr>
