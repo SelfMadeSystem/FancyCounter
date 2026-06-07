@@ -57,7 +57,7 @@ function Item({
     <tr
       className={clsx(
         !hidden && "border-b border-gray-300",
-        hidden && "invisible",
+        hidden && "collapse",
       )}
     >
       {fields.map((_, i) => (
