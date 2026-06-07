@@ -5,6 +5,7 @@ import Item from './Item';
 import './index.css';
 import { $fields, $sortedItems } from './store';
 import { useStore } from '@nanostores/react';
+import { AnimatePresence } from 'motion/react';
 
 export function App() {
   const items = useStore($sortedItems);
@@ -27,7 +28,6 @@ export function App() {
       XLSX.utils.book_append_sheet(wb, ws, 'Items');
       XLSX.writeFile(wb, 'items.xlsx');
     } catch (err) {
-      // eslint-disable-next-line no-console
       console.error('Export to Excel failed:', err);
     }
   }
@@ -48,9 +48,11 @@ export function App() {
           <Fields />
         </thead>
         <tbody>
-          {items.map(([item]) => (
-            <Item key={item} id={item} />
-          ))}
+          <AnimatePresence>
+            {items.map(([item]) => (
+              <Item key={item} id={item} />
+            ))}
+          </AnimatePresence>
         </tbody>
       </table>
     </>

@@ -27,20 +27,7 @@ export type Item = {
 };
 export const $items = persistentMap<Record<string, Item>>(
   'Items',
-  {
-    1: {
-      values: ['PWR-008 (2000 mm)', '1010-21-832-9927'],
-      count: 2,
-    },
-    2: {
-      values: ['PWR-007 (1000 mm)', '1010-21-832-9926'],
-      count: 1,
-    },
-    3: {
-      values: ['AC Input Cable', '1010-21-832-9925'],
-      count: 3,
-    },
-  },
+  {},
   {
     encode: value => JSON.stringify(value),
     decode: value => JSON.parse(value),
