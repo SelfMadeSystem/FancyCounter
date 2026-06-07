@@ -33,11 +33,8 @@ export function Fields() {
           {sort.by === "qty" ? (sort.dir === "asc" ? " ▲" : " ▼") : " ⤓"}
         </span>
       </th>
-      <th
-        className="px-4 py-2 border-b border-gray-300 bg-green-200 text-left text-gray-600 uppercase text-sm cursor-pointer"
-        onClick={onAddField}
-      >
-        +
+      <th className="border-b border-gray-300 text-left text-gray-600 uppercase text-sm cursor-pointer">
+        <button className="px-4 py-2 rounded-md bg-green-200 hover:bg-green-300 cursor-pointer" onClick={onAddField}>+</button>
       </th>
     </>
   );
