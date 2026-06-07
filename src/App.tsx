@@ -5,7 +5,6 @@ import Item from './Item';
 import './index.css';
 import { $fields, $sortedItems } from './store';
 import { useStore } from '@nanostores/react';
-import { AnimatePresence } from 'motion/react';
 
 export function App() {
   const items = useStore($sortedItems);
@@ -48,11 +47,9 @@ export function App() {
           <Fields />
         </thead>
         <tbody>
-          <AnimatePresence>
-            {items.map(([item]) => (
-              <Item key={item} id={item} />
-            ))}
-          </AnimatePresence>
+          {items.map(([item]) => (
+            <Item key={item} id={item} />
+          ))}
         </tbody>
       </table>
     </>

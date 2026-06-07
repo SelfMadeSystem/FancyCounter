@@ -2,7 +2,6 @@ import { $fields, $filter, $items, $selectedId, removeItem } from './store';
 import { filterMatches } from './utils';
 import { useStore } from '@nanostores/react';
 import clsx from 'clsx';
-import { motion } from 'motion/react';
 import { useEffect, useState } from 'react';
 
 export default function ItemWrapper({ id }: { id: string }) {
@@ -65,18 +64,12 @@ function Item({
   }
 
   return (
-    <motion.tr
+    <tr
       className={clsx(
         !hidden && 'border-b border-gray-300',
         hidden && 'collapse',
         selected && 'bg-green-200',
       )}
-      initial={{
-        opacity: 0,
-      }}
-      animate={{
-        opacity: 1,
-      }}
     >
       {fields.map((_, i) => (
         <td
@@ -107,6 +100,6 @@ function Item({
           -
         </button>
       </td>
-    </motion.tr>
+    </tr>
   );
 }
