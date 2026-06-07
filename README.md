@@ -9,6 +9,7 @@ A small web app for counting items with customizable fields and fast keyboard-dr
 - **Smart Increment:** Automatically increments quantity when all fields match an existing item.
 - **Search:** Filter items per field.
 - **Keyboard Friendly:** Use Up/Down to select, Enter to increment, Tab to move between top-bar fields. When at the last top-bar field (excluding quantity), press Enter to add the item.
+- **Offline:** All data is saved locally in your browser and restored when you close and reopen or refresh the tab.
 
 ## Development
 
