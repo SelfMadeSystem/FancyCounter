@@ -70,3 +70,23 @@ export function addItem(values: string[], count: number) {
 }
 
 export const filterAtom = atom<string[]>([]);
+
+export type Sort = {
+  by: "qty" | number | null;
+  dir: "asc" | "desc";
+};
+
+export const sortAtom = atom<Sort>({ by: null, dir: "asc" });
+
+export function onSortSelect(sort: "qty" | number) {
+  const cur = sortAtom.get();
+  if (cur.by === sort) {
+    if (cur.dir === "desc") {
+      sortAtom.set({ by: null, dir: "asc" });
+      return;
+    }
+    sortAtom.set({ by: sort, dir: "desc" });
+    return
+  }
+  sortAtom.set({ by: sort, dir: "asc" });
+}

@@ -2,25 +2,30 @@ import { useStore } from "@nanostores/react";
 import { Fields } from "./Fields";
 import "./index.css";
 import Item from "./Item";
-import { itemsAtom, filterAtom } from "./store";
+import { itemsAtom, sortAtom } from "./store";
 import { Input } from "./Input";
-import { filterMatches } from "./utils";
 
 export function App() {
-  const itemsObj = useStore(itemsAtom);
-  const filter = useStore(filterAtom);
+  const itemsMap = useStore(itemsAtom);
+  const sort = useStore(sortAtom);
 
-
-  const items = Object.keys(itemsObj).sort((a, b) => {
-    const aMatch = filterMatches(itemsObj[a]!.values, filter);
-    const bMatch = filterMatches(itemsObj[b]!.values, filter);
-    if (aMatch === bMatch) return 0;
-    return aMatch ? -1 : 1;
+  const items = Object.keys(itemsMap).sort((a, b) => {
+    if (sort.by === null) return Number(a) - Number(b);
+    if (sort.by === "qty") {
+      const av = itemsMap[a]?.count ?? 0;
+      const bv = itemsMap[b]?.count ?? 0;
+      return sort.dir === "asc" ? av - bv : bv - av;
+    }
+    const av = (itemsMap[a]?.values?.[sort.by] || "").toString();
+    const bv = (itemsMap[b]?.values?.[sort.by] || "").toString();
+    if (av < bv) return sort.dir === "asc" ? -1 : 1;
+    if (av > bv) return sort.dir === "asc" ? 1 : -1;
+    return 0;
   });
 
   return (
     <>
-      <table className="bg-white border border-gray-300 rounded-lg shadow-md">
+      <table className="mx-auto bg-white border border-gray-300 rounded-lg shadow-md">
         <thead className="bg-gray-100 border-b border-gray-300">
           <tr className="text-left text-gray-600 text-sm">
             <Input />
