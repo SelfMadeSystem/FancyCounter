@@ -1,13 +1,13 @@
-import { useStore } from "@nanostores/react";
-import Field from "./Field";
-import { $fields, onSortSelect, $sort } from "./store";
+import Field from './Field';
+import { $fields, $sort, onSortSelect } from './store';
+import { useStore } from '@nanostores/react';
 
 export function Fields() {
   const fields = useStore($fields);
   const sort = useStore($sort);
 
   function toggleQtySort() {
-    onSortSelect("qty");
+    onSortSelect('qty');
   }
 
   function onAddField() {
@@ -19,22 +19,27 @@ export function Fields() {
       {fields.map((field, i) => (
         <Field key={i} name={field.name} index={i} />
       ))}
-      <th className="pl-4 border-b border-gray-300 text-left text-gray-600 uppercase text-sm">
+      <th className="border-b border-gray-300 pl-4 text-left text-sm text-gray-600 uppercase">
         <span>Qty</span>
         <span
           contentEditable={false}
-          onClick={(e) => {
+          onClick={e => {
             e.stopPropagation();
             toggleQtySort();
           }}
-          className="px-2 py-2 text-xs text-gray-500 cursor-pointer font-mono"
+          className="cursor-pointer px-2 py-2 font-mono text-xs text-gray-500"
           title="Sort by quantity"
         >
-          {sort.by === "qty" ? (sort.dir === "asc" ? " ▲" : " ▼") : " ⤓"}
+          {sort.by === 'qty' ? (sort.dir === 'asc' ? '▲' : '▼') : '⤓'}
         </span>
       </th>
-      <th className="border-b border-gray-300 text-left text-gray-600 uppercase text-sm cursor-pointer">
-        <button className="px-4 py-2 rounded-md bg-green-200 hover:bg-green-300 cursor-pointer" onClick={onAddField}>+</button>
+      <th className="cursor-pointer border-b border-gray-300 text-left text-sm text-gray-600 uppercase">
+        <button
+          className="cursor-pointer rounded-md bg-green-200 px-4 py-2 hover:bg-green-300"
+          onClick={onAddField}
+        >
+          +
+        </button>
       </th>
     </>
   );

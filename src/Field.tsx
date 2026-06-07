@@ -1,5 +1,5 @@
-import { useStore } from "@nanostores/react";
-import { $fields, onSortSelect, $sort } from "./store";
+import { $fields, $sort, onSortSelect } from './store';
+import { useStore } from '@nanostores/react';
 
 export default function Field({
   name,
@@ -12,7 +12,7 @@ export default function Field({
   const sort = useStore($sort);
 
   function onNameBlur(e: React.FocusEvent<HTMLSpanElement>) {
-    const newName = e.currentTarget.textContent || "";
+    const newName = e.currentTarget.textContent || '';
 
     if (!newName.trim()) {
       $fields.set(fields.filter((_, i) => i !== index));
@@ -29,23 +29,23 @@ export default function Field({
   }
 
   return (
-    <th className="pl-4 border-b border-gray-300 text-left text-gray-600 uppercase text-sm focus-within:outline-1">
-      <div className="flex justify-between items-center">
+    <th className="border-b border-gray-300 pl-4 text-left text-sm text-gray-600 uppercase focus-within:outline-1">
+      <div className="flex items-center justify-between">
         <span
           contentEditable="plaintext-only"
           suppressContentEditableWarning
           onBlur={onNameBlur}
-          className="outline-none w-full"
+          className="w-full outline-none"
         >
           {name}
         </span>
         <span
           contentEditable={false}
           onClick={toggleFieldSort}
-          className="text-xs px-2 py-2 text-gray-500 cursor-pointer font-mono"
+          className="cursor-pointer px-2 py-2 font-mono text-xs text-gray-500"
           title="Sort by this field"
         >
-          {sort.by === index ? (sort.dir === "asc" ? " ▲" : " ▼") : " ⤓"}
+          {sort.by === index ? (sort.dir === 'asc' ? '▲' : '▼') : '⤓'}
         </span>
       </div>
     </th>

@@ -1,23 +1,23 @@
-import { persistentAtom, persistentMap } from "@nanostores/persistent";
-import { atom, computed } from "nanostores";
-import { filterMatches } from "./utils";
+import { filterMatches } from './utils';
+import { persistentAtom, persistentMap } from '@nanostores/persistent';
+import { atom, computed } from 'nanostores';
 
 export type Field = {
   name: string;
 };
 export const $fields = persistentAtom<Field[]>(
-  "Fields",
+  'Fields',
   [
     {
-      name: "Name",
+      name: 'Name',
     },
     {
-      name: "NSN",
+      name: 'NSN',
     },
   ],
   {
-    encode: (value) => JSON.stringify(value),
-    decode: (value) => JSON.parse(value),
+    encode: value => JSON.stringify(value),
+    decode: value => JSON.parse(value),
   },
 );
 
@@ -26,24 +26,24 @@ export type Item = {
   count: number;
 };
 export const $items = persistentMap<Record<string, Item>>(
-  "Items",
+  'Items',
   {
     1: {
-      values: ["PWR-008 (2000 mm)", "1010-21-832-9927"],
+      values: ['PWR-008 (2000 mm)', '1010-21-832-9927'],
       count: 2,
     },
     2: {
-      values: ["PWR-007 (1000 mm)", "1010-21-832-9926"],
+      values: ['PWR-007 (1000 mm)', '1010-21-832-9926'],
       count: 1,
     },
     3: {
-      values: ["AC Input Cable", "1010-21-832-9925"],
+      values: ['AC Input Cable', '1010-21-832-9925'],
       count: 3,
     },
   },
   {
-    encode: (value) => JSON.stringify(value),
-    decode: (value) => JSON.parse(value),
+    encode: value => JSON.stringify(value),
+    decode: value => JSON.parse(value),
   },
 );
 
@@ -73,27 +73,27 @@ export function addItem(values: string[], count: number) {
 export const $filter = atom<string[]>([]);
 
 export type Sort = {
-  by: "qty" | number | null;
-  dir: "asc" | "desc";
+  by: 'qty' | number | null;
+  dir: 'asc' | 'desc';
 };
 
-export const $sort = atom<Sort>({ by: null, dir: "asc" });
+export const $sort = atom<Sort>({ by: null, dir: 'asc' });
 
-export function onSortSelect(sort: "qty" | number) {
+export function onSortSelect(sort: 'qty' | number) {
   const cur = $sort.get();
   if (cur.by === sort) {
-    if (cur.dir === "desc") {
-      $sort.set({ by: null, dir: "asc" });
+    if (cur.dir === 'desc') {
+      $sort.set({ by: null, dir: 'asc' });
       return;
     }
-    $sort.set({ by: sort, dir: "desc" });
+    $sort.set({ by: sort, dir: 'desc' });
     return;
   }
-  $sort.set({ by: sort, dir: "asc" });
+  $sort.set({ by: sort, dir: 'asc' });
 }
 
 export const $filteredItems = computed([$items, $filter], (items, filter) => {
-  return Object.values(items).filter((item) =>
+  return Object.values(items).filter(item =>
     filterMatches(item.values, filter),
   );
 });
@@ -102,15 +102,15 @@ export const $sortedItems = computed([$items, $sort], (items, sort) => {
   if (sort.by === null) return Object.entries(items);
   return Object.entries(items).sort(([a], [b]) => {
     if (sort.by === null) return Number(a) - Number(b);
-    if (sort.by === "qty") {
+    if (sort.by === 'qty') {
       const av = items[a]?.count ?? 0;
       const bv = items[b]?.count ?? 0;
-      return sort.dir === "asc" ? av - bv : bv - av;
+      return sort.dir === 'asc' ? av - bv : bv - av;
     }
-    const av = (items[a]?.values?.[sort.by] || "").toString();
-    const bv = (items[b]?.values?.[sort.by] || "").toString();
-    if (av < bv) return sort.dir === "asc" ? -1 : 1;
-    if (av > bv) return sort.dir === "asc" ? 1 : -1;
+    const av = (items[a]?.values?.[sort.by] || '').toString();
+    const bv = (items[b]?.values?.[sort.by] || '').toString();
+    if (av < bv) return sort.dir === 'asc' ? -1 : 1;
+    if (av > bv) return sort.dir === 'asc' ? 1 : -1;
     return 0;
   });
 });
@@ -118,9 +118,7 @@ export const $sortedItems = computed([$items, $sort], (items, sort) => {
 export const $sortedFilteredItems = computed(
   [$sortedItems, $filter],
   (items, filter) => {
-    return items.filter(([, item]) =>
-      filterMatches(item.values, filter),
-    );
+    return items.filter(([, item]) => filterMatches(item.values, filter));
   },
 );
 

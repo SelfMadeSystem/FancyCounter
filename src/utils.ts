@@ -12,7 +12,7 @@ export function filterMatches(values: string[], filter: string[]) {
 
 export function hasFilter(filter: string[]) {
   for (const f of filter) {
-    if (f.trim() !== "") return true;
+    if (f.trim() !== '') return true;
   }
   return false;
 }

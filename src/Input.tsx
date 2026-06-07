@@ -1,15 +1,15 @@
-import { useStore } from "@nanostores/react";
 import {
-  addItem,
   $fields,
   $filter,
+  $items,
+  $selected,
+  $selectedId,
+  addItem,
   selectNext,
   selectPrevious,
-  $selectedId,
-  $selected,
-  $items,
-} from "./store";
-import { useRef, useState } from "react";
+} from './store';
+import { useStore } from '@nanostores/react';
+import { useRef, useState } from 'react';
 
 export function Input() {
   const refs = useRef<(HTMLElement | null)[]>([]);
@@ -21,13 +21,13 @@ export function Input() {
     values.length = fields.length; // Ensure the array length matches the number of fields
     const newValues = [...values];
     newValues[i] = newValue;
-    $filter.set(newValues.map((v) => v?.trim()?.toLowerCase() ?? ""));
+    $filter.set(newValues.map(v => v?.trim()?.toLowerCase() ?? ''));
     setValues(newValues);
   }
 
   function onKeyDown(e: React.KeyboardEvent<HTMLTableCellElement>, i: number) {
     switch (e.key) {
-      case "Enter": {
+      case 'Enter': {
         e.preventDefault();
         const sid = $selectedId.get();
         if (sid !== null) {
@@ -42,18 +42,18 @@ export function Input() {
         }
         if (e.shiftKey) {
           const prevIndex =
-            refs.current.findIndex((ref) => ref === e.currentTarget) - 1;
+            refs.current.findIndex(ref => ref === e.currentTarget) - 1;
           if (prevIndex !== -1 && prevIndex < refs.current.length) {
             refs.current[prevIndex]?.focus();
           }
           break;
         }
         const nextIndex =
-          refs.current.findIndex((ref) => ref === e.currentTarget) + 1;
+          refs.current.findIndex(ref => ref === e.currentTarget) + 1;
         if (nextIndex < refs.current.length) {
           refs.current[nextIndex]?.focus();
         } else {
-          values[refs.current.length - 1] = e.currentTarget.textContent || "";
+          values[refs.current.length - 1] = e.currentTarget.textContent || '';
           onAddItem();
           const firstRef = refs.current[0];
           if (firstRef) {
@@ -62,13 +62,13 @@ export function Input() {
         }
         break;
       }
-      case "ArrowDown": {
+      case 'ArrowDown': {
         if (e.shiftKey || e.altKey || e.metaKey || e.ctrlKey) break;
         e.preventDefault();
         selectNext();
         break;
       }
-      case "ArrowUp": {
+      case 'ArrowUp': {
         if (e.shiftKey || e.altKey || e.metaKey || e.ctrlKey) break;
         e.preventDefault();
         selectPrevious();
@@ -85,9 +85,9 @@ export function Input() {
   function clear() {
     setValues([]);
     setCount(1);
-    refs.current.forEach((ref) => {
+    refs.current.forEach(ref => {
       if (ref) {
-        ref.textContent = "";
+        ref.textContent = '';
       }
     });
     $filter.set([]);
@@ -97,13 +97,13 @@ export function Input() {
     <>
       {fields.map((_, i) => (
         <td
-          className="px-4 py-2 border border-gray-300 text-left text-gray-800"
+          className="border border-gray-300 px-4 py-2 text-left text-gray-800"
           key={i}
           contentEditable="plaintext-only"
           suppressContentEditableWarning
-          onKeyDown={(e) => onKeyDown(e, i)}
-          onInput={(e) => onValueChange(e.currentTarget.innerText, i)}
-          ref={(el) => {
+          onKeyDown={e => onKeyDown(e, i)}
+          onInput={e => onValueChange(e.currentTarget.innerText, i)}
+          ref={el => {
             refs.current[i] = el;
           }}
         />
@@ -112,13 +112,13 @@ export function Input() {
         <input
           type="number"
           value={count}
-          onChange={(e) => setCount(parseInt(e.target.value, 10))}
-          className="w-18 px-2 py-2 border border-gray-300 rounded"
+          onChange={e => setCount(parseInt(e.target.value, 10))}
+          className="w-18 rounded border border-gray-300 px-2 py-2"
         />
       </td>
       <td>
         <button
-          className="cursor-pointer px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="cursor-pointer rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
           onClick={onAddItem}
         >
           Add
