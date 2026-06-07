@@ -63,10 +63,14 @@ export function Input() {
         break;
       }
       case "ArrowDown": {
+        if (e.shiftKey || e.altKey || e.metaKey || e.ctrlKey) break;
+        e.preventDefault();
         selectNext();
         break;
       }
       case "ArrowUp": {
+        if (e.shiftKey || e.altKey || e.metaKey || e.ctrlKey) break;
+        e.preventDefault();
         selectPrevious();
         break;
       }
