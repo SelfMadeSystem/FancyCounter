@@ -95,7 +95,7 @@ export function Input() {
         <td
           className="px-4 py-2 border border-gray-300 text-left text-gray-800"
           key={i}
-          contentEditable
+          contentEditable="plaintext-only"
           suppressContentEditableWarning
           onKeyDown={(e) => onKeyDown(e, i)}
           onInput={(e) => onValueChange(e.currentTarget.innerText, i)}

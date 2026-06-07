@@ -72,7 +72,7 @@ function Item({
         <td
           className="px-4 py-2 border-b border-gray-300 text-left text-gray-800"
           key={i}
-          contentEditable
+          contentEditable="plaintext-only"
           suppressContentEditableWarning
           onBlur={(e) => onValueBlur(e, i)}
         >

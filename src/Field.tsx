@@ -32,7 +32,7 @@ export default function Field({
     <th className="pl-4 border-b border-gray-300 text-left text-gray-600 uppercase text-sm focus-within:outline-1">
       <div className="flex justify-between items-center">
         <span
-          contentEditable
+          contentEditable="plaintext-only"
           suppressContentEditableWarning
           onBlur={onNameBlur}
           className="outline-none w-full"
