@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/react";
-import { fieldsAtom, onSortSelect, sortAtom } from "./store";
+import { $fields, onSortSelect, $sort } from "./store";
 
 export default function Field({
   name,
@@ -8,18 +8,18 @@ export default function Field({
   name: string;
   index: number;
 }) {
-  const fields = useStore(fieldsAtom);
-  const sort = useStore(sortAtom);
+  const fields = useStore($fields);
+  const sort = useStore($sort);
 
   function onNameBlur(e: React.FocusEvent<HTMLSpanElement>) {
     const newName = e.currentTarget.textContent || "";
 
     if (!newName.trim()) {
-      fieldsAtom.set(fields.filter((_, i) => i !== index));
+      $fields.set(fields.filter((_, i) => i !== index));
       return;
     }
 
-    fieldsAtom.set(fields.map((f, i) => (i === index ? { name: newName } : f)));
+    $fields.set(fields.map((f, i) => (i === index ? { name: newName } : f)));
     e.currentTarget.textContent = newName;
   }
 

@@ -1,17 +1,17 @@
 import { useStore } from "@nanostores/react";
 import Field from "./Field";
-import { fieldsAtom, onSortSelect, sortAtom } from "./store";
+import { $fields, onSortSelect, $sort } from "./store";
 
 export function Fields() {
-  const fields = useStore(fieldsAtom);
-  const sort = useStore(sortAtom);
+  const fields = useStore($fields);
+  const sort = useStore($sort);
 
   function toggleQtySort() {
     onSortSelect("qty");
   }
 
   function onAddField() {
-    fieldsAtom.set([...fields, { name: `Field ${fields.length + 1}` }]);
+    $fields.set([...fields, { name: `Field ${fields.length + 1}` }]);
   }
 
   return (

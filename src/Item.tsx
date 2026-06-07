@@ -1,12 +1,13 @@
 import { useStore } from "@nanostores/react";
-import { fieldsAtom, filterAtom, itemsAtom, removeItem } from "./store";
-import { useState } from "react";
+import { $fields, $filter, $items, $selectedId, removeItem } from "./store";
+import { useEffect, useState } from "react";
 import clsx from "clsx";
 import { filterMatches } from "./utils";
 
 export default function ItemWrapper({ id }: { id: string }) {
-  const items = useStore(itemsAtom);
-  const filter = useStore(filterAtom);
+  const items = useStore($items);
+  const filter = useStore($filter);
+  const selectedId = useStore($selectedId);
   const item = items[id];
 
   if (!item) {
@@ -15,7 +16,7 @@ export default function ItemWrapper({ id }: { id: string }) {
 
   const hidden = !filterMatches(item.values, filter);
 
-  return <Item id={id} {...item} hidden={hidden} />;
+  return <Item id={id} {...item} hidden={hidden} selected={selectedId === id} />;
 }
 
 function Item({
@@ -23,17 +24,23 @@ function Item({
   values,
   count: initialCount,
   hidden,
+  selected,
 }: {
   id: string;
   values: string[];
   count: number;
   hidden: boolean;
+  selected: boolean;
 }) {
-  const fields = useStore(fieldsAtom);
+  const fields = useStore($fields);
   const [count, setCount] = useState(initialCount.toString());
 
+  useEffect(() => {
+    setCount(initialCount.toString());
+  }, [initialCount])
+
   function commitCount() {
-    itemsAtom.setKey(id, {
+    $items.setKey(id, {
       values,
       count: count === "" ? initialCount : Number(count),
     });
@@ -43,7 +50,7 @@ function Item({
   function onValueBlur(e: React.FocusEvent<HTMLTableCellElement>, i: number) {
     const newValue = e.currentTarget.textContent || "";
 
-    itemsAtom.setKey(id, {
+    $items.setKey(id, {
       values: values.map((v, index) => (index === i ? newValue : v)),
       count: count === "" ? 0 : Number(count),
     });
@@ -58,6 +65,7 @@ function Item({
       className={clsx(
         !hidden && "border-b border-gray-300",
         hidden && "collapse",
+        selected && "bg-green-200",
       )}
     >
       {fields.map((_, i) => (
