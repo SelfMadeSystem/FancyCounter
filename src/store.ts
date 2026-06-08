@@ -1,10 +1,13 @@
 import { filterMatches } from './utils';
 import { persistentAtom, persistentMap } from '@nanostores/persistent';
 import { atom, computed } from 'nanostores';
+import z from 'zod';
 
-export type Field = {
-  name: string;
-};
+export const fieldSchema = z.object({
+  name: z.string(),
+});
+export const fieldsSchema = z.array(fieldSchema);
+export type Field = z.infer<typeof fieldSchema>;
 export const $fields = persistentAtom<Field[]>(
   'Fields',
   [
@@ -21,10 +24,12 @@ export const $fields = persistentAtom<Field[]>(
   },
 );
 
-export type Item = {
-  values: string[];
-  count: number;
-};
+export const itemSchema = z.object({
+  values: z.array(z.string()),
+  count: z.number(),
+});
+export const itemsSchema = z.record(z.string(), itemSchema);
+export type Item = z.infer<typeof itemSchema>;
 export const $items = persistentMap<Record<string, Item>>(
   'Items',
   {},
@@ -152,4 +157,33 @@ export function selectPrevious() {
     return;
   }
   $selected.set(selected - 1);
+}
+
+export function serialize(): string {
+  return JSON.stringify({
+    fields: $fields.get(),
+    items: $items.get(),
+  });
+}
+
+export function deserialize(str: string): string | void {
+  const obj = JSON.parse(str);
+  if (!('fields' in obj)) {
+    return "'fields' missing from JSON";
+  }
+  if (!('items' in obj)) {
+    return "'items' missing from JSON";
+  }
+  const fieldsParse = fieldsSchema.safeParse(obj.fields);
+  if (fieldsParse.error) {
+    console.error('Error parsing fields: ' + fieldsParse.error);
+    return fieldsParse.error.name;
+  }
+  const itemsParse = itemsSchema.safeParse(obj.items);
+  if (itemsParse.error) {
+    console.error('Error parsing items: ' + itemsParse.error);
+    return itemsParse.error.name;
+  }
+  $fields.set(fieldsParse.data);
+  $items.set(itemsParse.data);
 }
