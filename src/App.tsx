@@ -3,7 +3,7 @@ import { Fields } from './Fields';
 import { Input } from './Input';
 import Item from './Item';
 import './index.css';
-import { $fields, $sortedItems, deserialize, serialize } from './store';
+import { $fields, $sortedItems, clear, deserialize, serialize } from './store';
 import { useStore } from '@nanostores/react';
 import { useRef } from 'react';
 
@@ -76,9 +76,14 @@ export function App() {
     }
   }
 
+  function onClear() {
+    if (!confirm('You sure you want to clear all entries?')) return;
+    clear();
+  }
+
   return (
-    <>
-      <div className="flex justify-center gap-2 max-md:my-3 md:float-end print:hidden">
+    <div className="flex min-h-screen flex-col gap-2 py-2">
+      <div className="flex justify-center gap-2 print:hidden">
         <button
           className="cursor-pointer rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
           onClick={exportToExcel}
@@ -116,7 +121,15 @@ export function App() {
           ))}
         </tbody>
       </table>
-    </>
+      <div className="mt-auto flex justify-center gap-2 md:float-end print:hidden">
+        <button
+          className="cursor-pointer rounded bg-red-600 px-4 py-2 text-white hover:bg-red-700"
+          onClick={onClear}
+        >
+          Clear
+        </button>
+      </div>
+    </div>
   );
 }
 

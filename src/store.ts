@@ -187,3 +187,8 @@ export function deserialize(str: string): string | void {
   $fields.set(fieldsParse.data);
   $items.set(itemsParse.data);
 }
+
+export function clear() {
+  $fields.set([]);
+  $items.set({});
+}
